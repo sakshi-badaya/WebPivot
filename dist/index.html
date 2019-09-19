@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>WebPivotTable Component</title>
+
+  <style type="text/css">
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+
+  <script type="text/javascript" src="./wpt.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      var wpt = $('web-pivot-table')[0];
+      wpt.setOptions({
+        styles: {
+          highLightColor: 'rgb(250, 224, 177)',
+        },
+        uiFlags: {
+          report: 0,
+        },
+        customHandlers: {
+          connectSource: 0,
+          openWpt: 1,
+          saveWpt: 1,
+          drillThrough: 1
+        },
+        filestack: {
+          enabled: true,
+          key: "A4bieoUsyR4yBrNPkFIvrz"  //demo.webpivottable.com
+        },
+      });
+
+      wpt.addEventListener(wpt.Constants.eventType.NEW_WPT, function (event) {
+        console.log("customize newWpt", event);
+      });
+
+      wpt.addEventListener(wpt.Constants.eventType.OPEN_WPT, function (event) {
+        console.log("customize open Wpt", event);
+      });
+
+      wpt.addEventListener(wpt.Constants.eventType.SAVE_WPT, function (event) {
+        console.log("customize saveWpt", event);
+      });
+
+      wpt.addEventListener(wpt.Constants.eventType.DRILL_THROUGH, function (event) {
+        console.log("customize drillthrough", event);
+      });
+
+      // wpt.setWptFromOlapCube({
+      //   catalog: "FoodMart",
+      //   cubeName: "HR",
+      //   dataSourceInfo: "Provider=Mondrian;DataSource=MondrianFoodMart;",
+      //   xmlaUrl: "http://52.4.22.157:8080/mondrian/xmla"
+      // });
+
+      // wpt.setWptFromDataArray(
+      //   ['asd', 'ccc'],
+      //   [[1, 2], [3, 4], [5, 6]],
+      //   "url"
+      // );
+
+      // wpt.setWptFromCsvUrl("https://webpivottable.com/testfiles/example.csv");
+
+      // wpt.setWptFromExcelUrl("https://webpivottable.com/testfiles/example.xls");
+
+      // wpt.setWptFromWptUrl("https://webpivottable.com/testfiles/file631.wpt");
+
+      // wpt.setWptFromWebService('https://demo.webpivottable.com/wpt/wsSample');
+
+      //  wpt.setWptFromGoogleSpreadSheet("https://docs.google.com/spreadsheet/pub?key=0Alkl5EEsxBwBdDFLV2Q4a1NWMmw1TXZBRlFMZ1Rxd0E&output=html");
+
+
+
+      // wpt.setWpt(obj).then(function (response) {
+      //   console.log(obj.sheet.pivot.rows);
+      //   console.log("setWptObject", response);
+      // });
+
+
+      // wpt.generateWptString(false).then(function(wptString){
+      //   console.log("wptString", wptString);
+      // });
+
+      // $('#generate').on('click', function () {
+      //   wpt.generateWptJSON(false).then(function (wptObj) {
+      //     $.ajax({
+      //       type: "POST",
+      //       url: "http://localhost:9091/jsonupload",
+      //       data: JSON.stringify(wptObj),
+      //       async: false,
+      //       contentType: "application/json; charset=utf-8",
+      //       dataType: "json",
+      //       success: function (data) {
+      //         alert("hola");
+      //       }
+      //     });
+      //   });
+      // });
+
+      // $('#locale-select').on('change', function () {
+      //   var value = this.value;
+      //   if (value) {
+      //     var wpt = $('web-pivot-table')[0];
+      //     wpt.setLocale(value);
+      //   }
+      // });
+
+       $('#table_content').hide();
+      // $('#column').hide();
+
+      $('#report').on('change', function () {
+        var value = this.value;
+        if (value) {
+          var wpt = $('web-pivot-table')[0];
+
+          // $.ajax({
+          //   url: value,
+          //   beforeSend: function (request) {
+          //     request.setRequestHeader("x-file-url", "http://localhost:8003/wpt/wsSample");
+          //   },
+          //   type: "POST",
+          //   contentType: "application/json; charset=utf-8",
+          //   dataType: "json",
+          //   success: function (data, textStatus, jqXHR) {
+          //     console.log(data);
+          //     wpt.setWptFromDataArray(data.attrArray, data.dataArray);
+          //   }
+          // });
+          wpt.setWptFromWebService(value);
+          // wpt.setWptFromCsvUrl(value);
+          setTimeout(function () {
+            $('#column').show();
+          }, 2000);
+        }
+      });
+
+      $('#column').on('change', function (e) {
+        var value = this.value;
+        if (value) {
+          var wpt = $('web-pivot-table')[0];
+
+
+          if (value == "2018") {
+            wpt.setWptFromWebService("https://api.myjson.com/bins/woxvd");
+
+            // $.get("https://api.myjson.com/bins/13yfg9", function (data, textStatus, jqXHR) {
+            //   var json = JSON.stringify(data);
+            //   wpt.setWpt(json).then(function (response) {
+            //     $('#table_content').show();
+            //   });
+            // });
+          } else if (value == "2019") {
+            wpt.setWptFromWebService("https://api.myjson.com/bins/n606x");
+
+            //   $.get("https://api.myjson.com/bins/19hrdl", function (data, textStatus, jqXHR) {
+            //     var json = JSON.stringify(data);
+            //     wpt.setWpt(json).then(function (response) {
+            //       $('#table_content').show();
+            //     });
+            //   });
+          }
+
+          setTimeout(function () {
+            wpt.generateWptJSON(false).then(function (wptObj) {
+              wptObj.sheet.pivot.columns.push("years");
+              wptObj.sheet.pivot.rows.push("category");
+
+              console.log(wptObj);
+              
+
+              var x = {
+                fieldId: "price",
+                format: { category: "NUMBER", negative: "RED_MINUS" },
+                category: "NUMBER",
+                negative: "RED_MINUS",
+                id: "1801369653589",
+                name: "price(Sum)",
+                stats: "SUM"
+              }
+              wptObj.sheet.pivot.values.push(x);
+
+              // filter = { filterType: "LABEL", filterLabelType: "INCLUDES", filterLabelIncludes: x }
+
+              filter = { filterType: "LABEL", filterLabelType: "INCLUDES", filterLabelIncludes: [value] }
+              wptObj.sheet.pivot.fields = { "years": { filter, "id": "years" } };
+
+
+              // wptObj.sheet.pivot.fields.years.filter.filterLabelIncludes.push(value);
+
+              wpt.setWpt(wptObj).then(function (response) {
+                $('#table_content').show();
+              });
+            });
+          }, 2000);
+
+            
+       
+
+        }
+
+
+
+      });
+
+      // $('#anothercolumn').on('change', function (e) {
+      //   var value = this.value;
+      //   var wpt = $('web-pivot-table')[0];
+      //   wpt.generateWptJSON(false).then(function (wptObj) {
+      //     wptObj.sheet.pivot.fields.years.filter.filterLabelIncludes.push(value.toString());
+      //     console.log(wptObj);
+      //     wpt.setWpt(wptObj).then(function (response) {
+      //         // $('#table_content').show();
+      //       });
+      //   });
+
+
+      $('#save').on('click', function () {
+        var data
+        wpt.generateWptJSON(false).then(function (wptObj) {
+          data = JSON.stringify(wptObj);
+          console.log(data);
+          $.ajax({
+            url: "https://api.myjson.com/bins",
+            type: "POST",
+            data: data,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data, textStatus, jqXHR) {
+              alert("SAVED");
+              localStorage.uri = data.uri;
+            }
+          });
+        });
+      });
+
+      $('#reload').on('click', function () {
+        location.reload();
+      });
+
+      $('#load').on('click', function () {
+        $.get(localStorage.uri, function (data, textStatus, jqXHR) {
+          var json = JSON.stringify(data);
+          wpt.setWpt(json).then(function (response) {
+            $('#table_content').show();
+          });
+        });
+      });
+
+
+      // $('#sum').on('click', function () {
+      //   var s1 = $('#s1').val();
+      //   var s2 = $('#s2').val();
+      //   var result = [];
+      //   var x = 0;
+      //   arr1 = $.map(s1.split(''), function (val, idx) { return parseInt(val, 10) });
+      //   arr2 = $.map(s2.split(''), function (val, idx) { return parseInt(val, 10) });
+
+      //   for (var i = arr1.length - 1; i >= 0; i--) {
+      //     for (var j = arr2.length - 1; j >= 0; j--) {
+      //       if (arr1[i] == 0 && arr2[j] == 0) {
+      //         if (x == 0) {
+      //           result.push(0);
+      //           break;
+      //         } else {
+      //           result.push(1);
+      //           x = 0;
+      //           break;
+      //         }
+      //       }
+
+      //       if (arr1[i] == 0 && arr2[j] == 1 || arr1[i] == 1 && arr2[j] == 0) {
+      //         if (x == 0) {
+      //           result.push(1);
+      //           break;
+      //         } else {
+      //           result.push(0);
+      //           x = 0;
+      //           break;
+      //         }
+      //       }
+
+      //       if (arr1[i] == 1 && arr2[j] == 1) {
+      //         if (x == 0) {
+      //           result.push(0);
+      //           x = 1;
+      //           break;
+      //         } else {
+      //           result.push(1);
+      //           x = 1;
+      //           break;
+      //         }
+      //       }
+      //     }
+      //   }
+      //   result.push(x);
+      //   console.log(result.reverse().join(""));
+
+
+      // });
+
+
+
+
+    });
+  </script>
+
+</head>
+
+<body>
+  <div style="padding:10px;">
+    <h3 style="text-align: center;margin:0;">Test wpt component</h3>
+    <div>
+
+      1. Load dummy data from myjson.com
+      <select id="report">
+        <option value="" selected disabled hidden>Load JSON</option>
+        <option value="https://api.myjson.com/bins/woxvd">
+          from
+          myjson</option>
+      </select>
+
+      <br>
+      2. Select year to show in columns
+      <select id="column">
+        <option value="" selected disabled hidden>Add column</option>
+        <!-- <option value="years">years</option> -->
+        <option value="2018">2018</option>
+        <option value="2019">2019</option>
+      </select>
+      <br>
+      3. Save the changes as JSON (POST myjson.com API) and store the URL in storage
+      <button id="save">SAVE JSON</button>
+      <br>
+      4. Reload
+      <button id="reload">RELOAD</button>
+      <br>
+      5. Load saved changes by calling (GET myjson.com API & URL from storage)
+      <button id="load">LOAD JSON</button>
+      <br>
+      <!-- 6. Select another year to add in columns
+      <select id="column">
+        <option value="" selected disabled hidden>Add column</option> -->
+      <!-- <option value="years">years</option> -->
+      <!-- <option value="2018">2018</option>
+        <option value="2019">2019</option>
+      </select> -->
+      <br>
+      Save it & load it.
+    </div>
+  </div>
+
+  <div id="table_content" style="width:98%; height:90%; margin: auto;">
+    <web-pivot-table options='{"localeFilePath": "./lang/", "locale":"en", "leavePageWarning": 0}'>
+    </web-pivot-table>
+  </div>
+
+  <!-- <input id="s1"> <input id="s2">
+  <button id="sum">Sum</button> -->
+</body>
+
+</html>
